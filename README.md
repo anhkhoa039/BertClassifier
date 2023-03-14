@@ -6,15 +6,15 @@ While developed for [CLINC150](https://github.com/clinc/oos-eval) dataset, simpl
 
 
 ## Quick Start
+- Clone **Demo** branch
+```git
+git clone -b demo https://github.com/anhkhoa039/BertClassifier.git
+```
 - Download the model here: [Drive](https://drive.google.com/drive/u/0/folders/16ZrBGLpimLrvQ7l3UYi6WgKcFyjZdA78)
 - Create a folder name **model** and put model following the path: `model/<put_model_here>` 
 - Install requirements
 ```python
 pip install -r requirements.txt
-```
-- Clone **Demo** branch
-```git
-git clone -b demo https://github.com/anhkhoa039/BertClassifier.git
 ```
 - Run
 ```python
