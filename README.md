@@ -1,56 +1,22 @@
 # BERT Intent Classifier for CLINC150 Dataset
+
 Pytorch and Huggingface implementation of a intent classifier with BERT as the encoder and a MLP as the classification head.
 While developed for [CLINC150](https://github.com/clinc/oos-eval) dataset, simply pass new dataset in form of .json work just fine.
+- This repo fork from https://github.com/ginofft/BertClassifier to add a small Demo  
 
-## References
-* **Stefan Larson et al**. *An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction (2019)*. https://doi.org/10.48550/arXiv.1909.02027
 
 ## Quick Start
-This repo will work with any .json dataset with similar format to CLINC150. Specifically:
-```json
-    {
-    "oos_val": [
-        [
-            "set a warning for when my bank account starts running low", 
-            "oos"
-        ], 
-        [
-            "set up a 52 minute timer", 
-            "timer"
-        ],
-            ...
-        ],
-    "train":[
-        [
-            "you shall address me as nick", 
-            "change_user_name"
-        ], 
-        [
-            "my name is nick", 
-            "change_user_name"
-        ], 
-        ]
-    }
+- Download the model here: [Drive](https://drive.google.com/drive/u/0/folders/16ZrBGLpimLrvQ7l3UYi6WgKcFyjZdA78)
+- Create a folder name **model** and put model following the path: `model/<put_model_here>` 
+- Install requirements
+```python
+pip install -r requirements.txt
 ```
-You might need to change the dataloader to suit your need (or dataset), the code you need to modify is found in main: 
+- Clone **Demo** branch
+```git
+git clone -b demo https://github.com/anhkhoa039/BertClassifier.git
 ```
-    dataDict = get_data_from_json(opt.datasetPath)
-    trainList = dataDict['train'] + dataDict['oos_train']
-    valList = dataDict['val'] + dataDict['oos_val']
-    testList = dataDict['test'] + dataDict['oos_test']
-    labelSet = get_label_set(trainList, valList, testList)
-```
-
-To train:
-```
-python main.py --mode train --mode train --nEpochs 500 --saveEvery 10 \
-    --datasetPath data/data_oos_plus.json \
-    --savePath output
-```
-
-To inference:
-```
-python main.py --mode inference \
-    --datasetPath data/data_oos_plus.json \
-    --loadPath output/best.pth.tar
+- Run
+```python
+flask --app app run
 ```
