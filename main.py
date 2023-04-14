@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 from typing import List
 import torch
+import random
 from transformers import BertTokenizer, DistilBertTokenizer, RobertaTokenizer
 
 from src.dataset import SentenceLabelDataset
@@ -45,7 +46,7 @@ parser.add_argument('--metrics', nargs = '+',
 
 #Data paremters
 parser.add_argument('--dataFormat', type=str, default = 'MixSNIPs', 
-                    help="Input data format, currently support CLINC150 and MixSNIPs", 
+                    help="Input data format, currently support CLINC150 and MixSNIPs, 'GNR' - generated data", 
                     choices=['CLINC150', 'MixSNIPs'])
 parser.add_argument('--batch_size', type=int, default = 16, help='batch size')
 parser.add_argument('--datasetPath', type = str, default='',
@@ -81,6 +82,19 @@ if __name__ == "__main__":
         trainList = read_MixSNIPs_file(trainPath)
         valList = read_MixSNIPs_file(valPath)
         testList = read_MixSNIPs_file(testPath)
+    
+    if opt.dataFormat.lower() == 'gnr':
+        trainPath = opt.datasetPath + '/train.json'
+        testPath = opt.datasetPath + '/test.json'
+
+        dataList = read_CLINC150_file(trainPath)['train']
+
+        random.seed(42)
+        random.shuffle(dataList)
+
+        trainList = dataList[:int(len(dataList)*0.8)]
+        valList = dataList[int(len(dataList)*0.8):]
+        testList = read_CLINC150_file(testPath)['test']
     
     labelSet = get_label_set(trainList, valList, testList)
 
