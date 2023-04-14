@@ -47,7 +47,7 @@ parser.add_argument('--metrics', nargs = '+',
 #Data paremters
 parser.add_argument('--dataFormat', type=str, default = 'MixSNIPs', 
                     help="Input data format, currently support CLINC150 and MixSNIPs, 'GNR' - generated data", 
-                    choices=['CLINC150', 'MixSNIPs'])
+                    choices=['CLINC150', 'MixSNIPs', 'GNR'])
 parser.add_argument('--batch_size', type=int, default = 16, help='batch size')
 parser.add_argument('--datasetPath', type = str, default='',
                     help='Path to dataset json')
