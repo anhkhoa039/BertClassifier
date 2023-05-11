@@ -88,8 +88,8 @@ if __name__ == "__main__":
         valPath = opt.datasetPath + '/valid.json'
         testPath = opt.datasetPath + '/test.json'
 
-        testList = read_CLINC150_file(trainPath)['train']
-        testList = read_CLINC150_file(valPath)['validation']
+        trainList = read_CLINC150_file(trainPath)['train']
+        valList = read_CLINC150_file(valPath)['validation']
         testList = read_CLINC150_file(testPath)['test']
     
     labelSet = get_label_set(trainList, valList, testList)
