@@ -85,15 +85,11 @@ if __name__ == "__main__":
     
     if opt.dataFormat.lower() == 'gnr':
         trainPath = opt.datasetPath + '/train.json'
+        valPath = opt.datasetPath + '/valid.json'
         testPath = opt.datasetPath + '/test.json'
 
-        dataList = read_CLINC150_file(trainPath)['train']
-
-        random.seed(42)
-        random.shuffle(dataList)
-
-        trainList = dataList[:int(len(dataList)*0.8)]
-        valList = dataList[int(len(dataList)*0.8):]
+        testList = read_CLINC150_file(trainPath)['train']
+        testList = read_CLINC150_file(valPath)['validation']
         testList = read_CLINC150_file(testPath)['test']
     
     labelSet = get_label_set(trainList, valList, testList)
