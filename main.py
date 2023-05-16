@@ -105,11 +105,12 @@ if __name__ == "__main__":
     model = model(nClasses=trainSet.nClasses)
     model.to(device)
 
-    if torch.cuda.device_count() > 1 :
-        print(f"{torch.cuda.device_count()} GPUs are available. Using DataParallel.")
-        model = torch.nn.DataParallel
     optimizer = torch.optim.AdamW(model.parameters(), lr = opt.lr)
     criterion = torch.nn.BCEWithLogitsLoss()
+
+    if torch.cuda.device_count() > 1 :
+        print(f"{torch.cuda.device_count()} GPUs are available. Using DataParallel.")
+        model = torch.nn.DataParallel(model)
     
     metrics = opt.metrics
     evaluator = MultiLabelEvaluator()
