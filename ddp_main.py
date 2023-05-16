@@ -126,7 +126,7 @@ if __name__ == "__main__":
     criterion = torch.nn.BCEWithLogitsLoss()
 
     model.to(device)
-    ddp_model = DDP(model, device_ids=[ddp_local_rank], output_device=ddp_local_rank) # NEW !!!
+    ddp_model = DDP(model, device_ids=[ddp_local_rank], output_device=ddp_local_rank,find_unused_parameters=True) # NEW !!!
 
     metrics = opt.metrics
     evaluator = MultiLabelEvaluator()
