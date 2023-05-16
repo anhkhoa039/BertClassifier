@@ -1,14 +1,10 @@
 import torch
-from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
+from torch.utils.data import DataLoader, DistributedSampler, SequentialSampler
 from src.dataset import SmartCollator, SentenceLabelDataset
 from src.evaluate import MultiLabelEvaluator
 from typing import List
 
-from torch.utils.data.distributed import DistributedSampler
-from torch.nn.parallel import DistributedDataParallel as DDP
-from torch.distributed import init_process_group, destroy_process_group
 
-backend = 'nccl'
 
 EVALUATION_MAP = {
     'macro accuracy' : MultiLabelEvaluator.get_macro_accuracy,
