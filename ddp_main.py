@@ -80,6 +80,7 @@ if __name__ == "__main__":
     # Get DDP rank
     ddp_rank = int(os.environ['RANK'])
     master_process = ddp_rank == 0
+    # Get the DDP local rank
     ddp_local_rank = int(os.environ['LOCAL_RANK'])
     # Set the cuda device
     device = f'cuda:{ddp_local_rank}'
@@ -120,11 +121,12 @@ if __name__ == "__main__":
 
     model = MODEL_MAPPING[opt.encoder]['model']
     model = model(nClasses=trainSet.nClasses)
-    model.to(device)
-    ddp_model = DDP(model, device_ids=[ddp_local_rank], output_device=ddp_local_rank) # NEW !!!
-
+    
     optimizer = torch.optim.AdamW(model.parameters(), lr = opt.lr)
     criterion = torch.nn.BCEWithLogitsLoss()
+
+    model.to(device)
+    ddp_model = DDP(model, device_ids=[ddp_local_rank], output_device=ddp_local_rank) # NEW !!!
 
     metrics = opt.metrics
     evaluator = MultiLabelEvaluator()
@@ -167,7 +169,7 @@ if __name__ == "__main__":
                         'train_loss' : epoch_train_loss,
                         'val_loss' : epoch_val_loss,
                         'classifier_threshold': optimal_val_thresholds,
-                        'model' : model.state_dict(),
+                        'model' : ddp_model.state_dict(),
                         'optimizer' : optimizer.state_dict(),
                         }, Path(opt.savePath), 'best.pth.tar')
             
@@ -177,7 +179,7 @@ if __name__ == "__main__":
                         'train_loss' : epoch_train_loss,
                         'val_loss' : epoch_val_loss,
                         'classifier_threshold': optimal_val_thresholds,
-                        'model' : model.state_dict(),
+                        'model' : ddp_model.state_dict(),
                         'optimizer' : optimizer.state_dict(),
                         }, Path(opt.savePath), 'epoch{}.pth.tar'.format(epoch))
     else:
