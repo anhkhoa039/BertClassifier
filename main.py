@@ -6,7 +6,7 @@ import random
 from transformers import BertTokenizer, DistilBertTokenizer, RobertaTokenizer
 
 from src.dataset import SentenceLabelDataset
-from src.accelerate_train import train, inference
+from src.dp_train import train, inference
 # from src.train import train, inference
 from src.models import BertMLPClassifier, DistilBertMLPClassifier, RoBertaMLPClassifier
 from src.utils import save_checkpoint, load_checkpoint, read_CLINC150_file, read_MixSNIPs_file, get_label_set, turn_single_label_to_multilabels
@@ -105,6 +105,9 @@ if __name__ == "__main__":
     model = model(nClasses=trainSet.nClasses)
     model.to(device)
 
+    if torch.cuda.device_count() > 1 :
+        print(f"{torch.cuda.device_cout()} GPUs are available. Using DataParallel.")
+        model = torch.nn.DataParallel
     optimizer = torch.optim.AdamW(model.parameters(), lr = opt.lr)
     criterion = torch.nn.BCEWithLogitsLoss()
     
