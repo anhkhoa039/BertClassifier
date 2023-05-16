@@ -106,7 +106,7 @@ if __name__ == "__main__":
     model.to(device)
 
     if torch.cuda.device_count() > 1 :
-        print(f"{torch.cuda.device_cout()} GPUs are available. Using DataParallel.")
+        print(f"{torch.cuda.device_count()} GPUs are available. Using DataParallel.")
         model = torch.nn.DataParallel
     optimizer = torch.optim.AdamW(model.parameters(), lr = opt.lr)
     criterion = torch.nn.BCEWithLogitsLoss()
