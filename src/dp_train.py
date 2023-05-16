@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
-from .dataset import SmartCollator, SentenceLabelDataset
-from .evaluate import MultiLabelEvaluator
+from src.dataset import SmartCollator, SentenceLabelDataset
+from src.evaluate import MultiLabelEvaluator
 from typing import List
 
 
@@ -32,7 +32,6 @@ def train(
                             sampler=RandomSampler(train_set),
                             batch_size = batch_size, 
                             num_workers = 2, 
-                            # shuffle = True,
                             collate_fn = collator.collate_dynamic_padding,
                             pin_memory = True)
     n_batches = len(dataloader)
@@ -86,7 +85,6 @@ def inference(testSet : SentenceLabelDataset,
                             sampler=SequentialSampler(testSet),
                             batch_size = batch_size, 
                             num_workers = 2, 
-                            # shuffle = True,
                             collate_fn = collator.collate_dynamic_padding,
                             pin_memory = True)
     epoch_loss = 0
